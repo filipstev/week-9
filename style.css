@@ -1,22 +1,43 @@
+:root {
+--white-text: rgb(255, 255, 255);
+--text: rgb(23, 43, 77);
+--lighter-text: rgb(94, 108, 132);
+--span-color: rgb(107, 119, 140);
+--card-color: rgb(123, 200, 108);
+--light-bg-color: rgba(0,0,0,0.08);
+--light-bg-color-hover: rgba(0, 0, 0, 0.2);
+--icons-color: rgba(223,225,230,1);
+--red-color: rgb(255, 0, 0);
+--blue-color: rgb(12, 12, 56);
+--column-color: rgb(235, 236, 240);
+--nav-bg-color: rgb(116, 123, 128);
+--search-bg-color: rgba(255, 255, 255, 0.3);
+--search-border-color: rgba(255, 255, 255, 0.25);
+--search-hover: rgba(255, 255, 255, 0.4);
+--card-hover: rgb(244, 245, 247);
+}
 body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   max-width: 100%;
+  min-height: 100vh;
   overflow-x: hidden;
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
+  background-image: url("assets/background_photo.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  color: var(--text);
 }
-
-/*komentar*/
-/*novi komentar*/
 
 .navbar {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #747b80;
+  background-color: var(--nav-bg-color);
   padding: 0.5rem 0;
 }
 
@@ -26,8 +47,9 @@ body {
 
 .navbar-left a {
   margin-right: 1rem;
-  color: white;
+  color: var(--white-text);
   text-decoration: none;
+  padding: 8px 6px;
 }
 
 .trello-logo {
@@ -35,28 +57,44 @@ body {
 }
 .navbar-left a:hover {
   cursor: pointer;
+  background-color: var(--search-hover);
+  border-radius: 3px;
 }
 
 .navbar-right {
+  position: relative;
   display: flex;
   padding-right: 1rem;
   align-items: center;
   justify-content: center;
+  color: var(--white-text);
+}
+.navbar-right i {
+  background: transparent;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 15px;
+  position: absolute;
+  top: 9px;
+  left: 10px;
 }
 
 .search {
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background-color: rgba(255, 255, 255, 0.3);
+  border: 1px solid var(--search-border-color);
+  background-color: var(--search-bg-color);
   border-radius: 3px;
   height: 28px;
   line-height: 19px;
-  padding-left: 14px;
+  padding-left: 30px;
   margin: 0;
   outline: none;
 }
 
 .search::placeholder {
-  color: white;
+  color: var(--white-text);
+}
+.search:hover {
+  background-color: var(--search-hover);
 }
 
 .profile-photo {
@@ -75,6 +113,9 @@ body {
   image-rendering: crisp-edges;
   -ms-interpolation-mode: nearest-neighbor;
 }
+.profile-photo:hover {
+  cursor: pointer;
+}
 
 /****************************************************/
 .inner-header {
@@ -82,6 +123,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: var(--text);
 }
 
 .inner-left {
@@ -94,7 +136,26 @@ body {
   padding-right: 1rem;
   display: flex;
 }
-
+.inner-right span {
+  margin-left: 5px;
+}
+.automation, .filter, .menu {
+  padding: 6px 12px;
+}
+.filter, .menu {
+  vertical-align: middle;
+}
+.menu * {
+  vertical-align: middle;
+}
+.filter svg, .filter span {
+  vertical-align: middle;
+}
+.divider {
+  height: 17px;
+  border-left: 1px solid var(--span-color);
+  margin: 8px 2px 7px 2px;
+}
 .title {
   display: flex;
   align-items: center;
@@ -105,10 +166,61 @@ body {
 
 .title i {
   margin-left: 0.5rem;
+  padding: 10px 8px;
+
+}
+.private-workspace {
+ padding: 0 15px;
+ border-left: 1px solid var(--span-color);
+ border-right: 1px solid var(--span-color);
+}
+.workplace-visible {
+  padding: 8px;
+}
+.workplace-visible span {
+  margin-left: 5px;
+}
+.light-bg {
+  border-radius: 3px;
+  background-color: var(--light-bg-color);
+}
+.light-bg:hover {
+  background-color: var(--light-bg-color-hover);
+  cursor: pointer;
+}
+.icons {
+  border-left: 1px solid var(--span-color);
+  padding-left: 12px;
+}
+.icons span {
+  border-radius: 50%;
+  background-color: var(--icons-color);
+  height: 28px;
+  width: 28px;
+  padding: 8px;
+  margin-left: -5px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.icons span:hover {
+  cursor: pointer;
+  background-color: var(--light-bg-color-hover);
+}
+.icons span:first-of-type {
+  background-color: var(--red-color);
+  color: var(--white-text);
+}
+.icons span:nth-last-of-type(3){
+  color: var(--white-text);
+  background-color: var(--blue-color);
+}
+.invite {
+  padding: 8px 12px;
 }
 
 .filter-menu {
   display: flex;
+
 }
 
 .inner-left div {
@@ -116,7 +228,7 @@ body {
 }
 
 .inner-right div {
-  margin-left: 1rem;
+  margin-left: 0.5rem;
 }
 
 /************************************************/
@@ -128,9 +240,9 @@ body {
 }
 
 .column {
-  padding: 1rem;
-  background-color: #ebecf0;
-  width: 15%;
+  padding: 0 0.5rem;
+  background-color: var(--column-color);
+  width: 272px;
   border-radius: 3px;
   display: flex;
   flex-direction: column;
@@ -140,21 +252,80 @@ body {
 .list-title {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding: 4px 0 4px 8px;
+  font-weight: 700;
 }
-
+.list-title a {
+  padding: 7px;
+}
+.list-title a:hover {
+  background-color: var(--light-bg-color-hover);
+  border-radius: 2px;
+}
+.list-title i {
+  color: var(--span-color);
+}
 .card {
-  background-color: white;
+  background-color: var(--white-text);
   padding: 0.5rem;
-  margin: 0.5rem 0;
+  margin-bottom: 0.5rem;
   border-radius: 3px;
-  box-shadow: 0 2px 2px -2px gray;
+  box-shadow: 0 2px 2px -2px var(--span-color);
+  display: flex;
+  justify-content: space-between;
 }
-
+.card:hover {
+  background-color: var(--card-hover);
+  cursor: pointer;
+}
+.card:hover a {
+  background-color: var(--card-hover);
+  visibility: visible;
+}
+.card-right-part a{
+  padding: 7px;
+  color: var(--lighter-text);
+  border-radius: 3px;
+  visibility: hidden;
+}
+.card-right-part a:hover {
+  background-color: var(--light-bg-color-hover);
+}
 .add-card {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding: 0.25rem 0.5rem;
+  margin: 0.25rem 0 0.5rem 0.5rem;
 }
-
-.add-card i {
-  margin-right: 0.5rem;
+.add-card>div {
+  width: 80%;
+  padding: 0.5rem;
+  border-radius: 3px;
+}
+.add-card>div:hover {
+  background-color: var(--light-bg-color-hover);
+  cursor: pointer;
+}
+.add-card a{
+  color: var(--lighter-text);
+  padding: 8px;
+  width: 17px;
+  text-align: center;
+  border-radius: 3px;
+}
+.add-card>a:hover{
+  color: var(--text);
+  cursor: pointer;
+  background-color: var(--light-bg-color-hover);
+}
+.add-card span {
+  margin-left: 0.5rem;
+}
+.column-5 {
+  height: fit-content;
+  width: 272px;
+  line-height: 20px;
+  padding: 10px 12px;
 }
