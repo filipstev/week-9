@@ -1,0 +1,157 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow-x: hidden;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+}
+
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #747b80;
+  padding: 0.5rem 0;
+}
+
+.navbar-left {
+  padding-left: 1rem;
+}
+
+.navbar-left a {
+  margin-right: 1rem;
+  color: white;
+  text-decoration: none;
+}
+
+.trello-logo {
+  font-size: 20px;
+}
+.navbar-left a:hover {
+  cursor: pointer;
+}
+
+.navbar-right {
+  display: flex;
+  padding-right: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.search {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+  height: 28px;
+  line-height: 19px;
+  padding-left: 14px;
+  margin: 0;
+  outline: none;
+}
+
+.search::placeholder {
+  color: white;
+}
+
+.profile-photo {
+  height: 32px;
+  margin-left: 0.7rem;
+}
+
+.profile-photo img {
+  height: 100%;
+  width: 32px;
+  border-radius: 50%;
+  /*Da se ne umrlja slika*/
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+/****************************************************/
+.inner-header {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inner-left {
+  padding-left: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.inner-right {
+  padding-right: 1rem;
+  display: flex;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+}
+.title h3 {
+  margin: 0;
+}
+
+.title i {
+  margin-left: 0.5rem;
+}
+
+.filter-menu {
+  display: flex;
+}
+
+.inner-left div {
+  margin-right: 1rem;
+}
+
+.inner-right div {
+  margin-left: 1rem;
+}
+
+/************************************************/
+
+.content {
+  margin-top: 1rem;
+  padding: 0 1rem;
+  display: flex;
+}
+
+.column {
+  padding: 1rem;
+  background-color: #ebecf0;
+  width: 15%;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  margin-right: 1rem;
+}
+
+.list-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card {
+  background-color: white;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  border-radius: 3px;
+  box-shadow: 0 2px 2px -2px gray;
+}
+
+.add-card {
+  display: flex;
+  align-items: center;
+}
+
+.add-card i {
+  margin-right: 0.5rem;
+}
