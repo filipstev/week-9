@@ -42,6 +42,43 @@ cardLeftPart.forEach((cardLeft) => {
 const input = document.createElement('textarea');
 const editInput = document.createElement('textarea');
 
+const saveChanges = (parentColumn, path, saveDiv) => {
+  if (path[2].classList[0] === 'card') {
+    addCards[parentColumn].style.display = 'flex';
+    editInput.style.display = 'none';
+    path[2].firstChild.firstChild.innerHTML = editInput.value;
+    path[2].style.display = 'flex';
+  } else if (path[4].classList[0] === 'card') {
+    addCards[parentColumn].style.display = 'flex';
+    editInput.style.display = 'none';
+    path[4].firstChild.firstChild.innerHTML = editInput.value;
+    path[4].style.display = 'flex';
+  } else if (path[3].classList[0] === 'card') {
+    addCards[parentColumn].style.display = 'flex';
+    editInput.style.display = 'none';
+    path[3].firstChild.firstChild.innerHTML = editInput.value;
+    path[3].style.display = 'flex';
+  }
+  saveDiv.style.display = 'none';
+};
+
+const closeEdit = (path, saveDiv, parentColumn) => {
+  if (path[2].classList[0] === 'card') {
+    addCards[parentColumn].style.display = 'flex';
+    editInput.style.display = 'none';
+    path[2].style.display = 'flex';
+  } else if (path[4].classList[0] === 'card') {
+    addCards[parentColumn].style.display = 'flex';
+    editInput.style.display = 'none';
+    path[4].style.display = 'flex';
+  } else if (path[3].classList[0] === 'card') {
+    addCards[parentColumn].style.display = 'flex';
+    editInput.style.display = 'none';
+    path[3].style.display = 'flex';
+  }
+  saveDiv.style.display = 'none';
+};
+
 const inputEdited = (e) => {
   let parentColumn;
 
@@ -51,24 +88,49 @@ const inputEdited = (e) => {
     parentColumn = Number(e.path[3].classList[0].slice(-1)) - 1;
   }
 
+  const saveDiv = document.createElement('div');
+  saveDiv.classList.add('add-card-bottom');
+
+  const saveButton = document.createElement('div');
+  saveButton.classList.add('add-card-button');
+  saveButton.innerHTML = 'Save';
+  saveButton.addEventListener('click', () =>
+    saveChanges(parentColumn, e.path, saveDiv)
+  );
+
+  const closeIcon = document.createElement('i');
+  closeIcon.classList.add('fas');
+  closeIcon.classList.add('fa-times');
+  closeIcon.addEventListener('click', () =>
+    closeEdit(e.path, saveDiv, parentColumn)
+  );
+
+  saveDiv.style.display = 'flex';
+
+  saveDiv.appendChild(saveButton);
+  saveDiv.appendChild(closeIcon);
+
   editInput.classList.add('input-add');
 
-  if (e.path[2].classList[0] === 'card') {
-    columns[parentColumn].insertBefore(editInput, e.path[2].classList[0]);
+  addCard[parentColumn].style.display = 'none';
 
+  if (e.path[2].classList[0] === 'card') {
+    columns[parentColumn].insertBefore(editInput, e.path[2]);
+    columns[parentColumn].insertBefore(saveDiv, e.path[2]);
     editInput.style.display = 'block';
     editInput.focus();
     editInput.value = e.path[2].firstChild.firstChild.textContent;
     e.path[2].style.display = 'none';
   } else if (e.path[4].classList[0] === 'card') {
-    columns[parentColumn].insertBefore(editInput, e.path[4].classList[0]);
-
+    columns[parentColumn].insertBefore(editInput, e.path[4]);
+    columns[parentColumn].insertBefore(saveDiv, e.path[4]);
     editInput.style.display = 'block';
     editInput.focus();
     editInput.value = e.path[4].firstChild.firstChild.textContent;
     e.path[4].style.display = 'none';
   } else if (e.path[3].classList[0] === 'card') {
-    columns[parentColumn].insertBefore(editInput, e.path[3].classList[0]);
+    columns[parentColumn].insertBefore(editInput, e.path[3]);
+    columns[parentColumn].insertBefore(saveDiv, e.path[3]);
 
     editInput.style.display = 'block';
     editInput.focus();
@@ -101,6 +163,8 @@ const addingCard = (e) => {
   if ((editInput.style.display = '')) {
     editInput.style.display = 'none';
   }
+
+  editInput.style.display = 'none';
 
   console.log(e);
   input.style.display = 'block';
