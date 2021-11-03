@@ -506,6 +506,9 @@ const closeInputNewList = (e, addCard, addCardBottom) => {
 };
 
 function createAnotherList(title) {
+  document.querySelector('.list-form-input').value = '';
+  document.querySelector('.list-form-input').focus();
+
   let columnDiv = document.createElement('div');
   columnDiv.classList.add('column');
 
