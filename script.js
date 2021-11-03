@@ -335,21 +335,11 @@ const addCardNewList = (e, addCard, addCardBottom, card, columnDiv) => {
     editInput.style.display = 'none';
   }
 
-  console.log(addCard.style);
-
   editInput.style.display = 'none';
 
-  console.log(e);
   input.style.display = 'block';
   input.classList.add('input-add');
   const inputVal = input.value;
-  let parentColumn;
-
-  if (e.path[2].classList[1] === 'column') {
-    parentColumn = Number(e.path[2].classList[0].slice(-1)) - 1;
-  } else {
-    parentColumn = Number(e.path[3].classList[0].slice(-1)) - 1;
-  }
 
   const noviDiv = document.createElement('div');
   noviDiv.appendChild(input);
@@ -357,19 +347,16 @@ const addCardNewList = (e, addCard, addCardBottom, card, columnDiv) => {
   addCard.style.display = 'none';
   addCardBottom.style.display = 'flex';
 
-  //   cards[parentColumn].style.display = 'block';
   card.classList.toggle('card-add');
   columnDiv.insertBefore(noviDiv, addCard);
-
-  console.log(inputVal);
 };
 
 const showCardNewList = (e, card, columnDiv, addCard, addCardBottom) => {
   const inputVal = input.value;
   if (inputVal === '') {
     input.style.display = 'none';
-    addCardBottoms[parentColumn].style.display = 'none';
-    addCards[parentColumn].style.display = 'flex';
+    addCardBottom.style.display = 'none';
+    addCard.style.display = 'flex';
     return;
   }
   input.value = '';
@@ -510,6 +497,14 @@ const inputEditedNewList = (e, addCard, columnDiv) => {
   }
 };
 
+const closeInputNewList = (e, addCard, addCardBottom) => {
+  input.value = '';
+  input.style.display = 'none';
+  addCardBottom.style.display = 'none';
+  addCard.style.display = 'flex';
+  return;
+};
+
 function createAnotherList(title) {
   let columnDiv = document.createElement('div');
   columnDiv.classList.add('column');
@@ -578,6 +573,10 @@ function createAnotherList(title) {
   iClose.classList.add('fa-times');
   addCardBottom.appendChild(addCardButton);
   addCardBottom.appendChild(iClose);
+
+  iClose.addEventListener('click', (e) =>
+    closeInputNewList(e, addCard, addCardBottom)
+  );
 
   addCardButton.addEventListener('click', (e) =>
     showCardNewList(e, card, columnDiv, addCard, addCardBottom)
