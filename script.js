@@ -8,7 +8,6 @@ const addCardButton = document.querySelectorAll('.add-card-button');
 const column = document.querySelectorAll('.column');
 const closeItem = document.querySelectorAll('.fa-times');
 
-
 const closeButtons = [];
 const columns = [];
 const addCardButtons = [];
@@ -16,7 +15,6 @@ const addCardBottoms = [];
 const addCards = [];
 const cardLeftNiz = [];
 const cards = [];
-
 
 column.forEach((column) => {
   columns.push(column);
@@ -257,11 +255,9 @@ const showCard = (e) => {
   columns[parentColumn].insertBefore(cardDiv, addCards[parentColumn]);
 };
 
-
 addButton.forEach((button) => {
   button.addEventListener('click', addingCard);
 });
-
 
 addCardButton.forEach((button) => {
   button.addEventListener('click', showCard);
@@ -269,8 +265,7 @@ addCardButton.forEach((button) => {
 
 //------------------------------------------------------
 
-
-function divAnotherList(){
+function divAnotherList() {
   let anotherDiv = document.createElement('div');
   anotherDiv.classList.add('make-list');
   anotherDiv.classList.add('light-bg');
@@ -278,8 +273,8 @@ function divAnotherList(){
   anotherI.classList.add('fas');
   anotherI.classList.add('fa-plus');
   let anotherSpan = document.createElement('span');
-  anotherSpan.innerHTML = "Add another list";
-  anotherSpan.style.marginLeft = "5px";
+  anotherSpan.innerHTML = 'Add another list';
+  anotherSpan.style.marginLeft = '5px';
   anotherDiv.appendChild(anotherI);
   anotherDiv.appendChild(anotherSpan);
   content.appendChild(anotherDiv);
@@ -288,16 +283,16 @@ function divAnotherList(){
 
 divAnotherList();
 
-function createListForm(){
+function createListForm() {
   let form = document.createElement('div');
   form.classList.add('form');
   let formInput = document.createElement('input');
-  formInput.placeholder = "Enter list title...";
+  formInput.placeholder = 'Enter list title...';
   formInput.classList.add('list-form-input');
   let listBottomDiv = document.createElement('div');
   listBottomDiv.classList.add('make-list-bottom');
   let addListButton = document.createElement('div');
-  addListButton.innerHTML = "Add list";
+  addListButton.innerHTML = 'Add list';
   let closeList = document.createElement('i');
   closeList.classList.add('fas');
   closeList.classList.add('fa-times');
@@ -308,33 +303,216 @@ function createListForm(){
   return form;
 }
 
-function closeForm(hide,show){
-  hide.style.display = "none";
-  show.style.display = "";
+function closeForm(hide, show) {
+  hide.style.display = 'none';
+  show.style.display = '';
 }
 
 var makeList = document.querySelector('.make-list');
 var formDiv = document.querySelector('.form');
 
-makeList.addEventListener('click',()=>{
-    makeList.style.display = "none";
-    formDiv.style.display = "flex";
-  });
-
-formDiv.lastChild.lastChild.addEventListener('click', ()=>{
-  closeForm(formDiv,makeList);
+makeList.addEventListener('click', () => {
+  makeList.style.display = 'none';
+  formDiv.style.display = 'flex';
 });
-formDiv.lastChild.firstChild.addEventListener('click',()=>{
+
+formDiv.lastChild.lastChild.addEventListener('click', () => {
+  closeForm(formDiv, makeList);
+});
+
+formDiv.lastChild.firstChild.addEventListener('click', () => {
   let listInputTitle = document.querySelector('.list-form-input').value;
-  if(listInputTitle != ""){
-    makeList.parentNode.insertBefore(createAnotherList(listInputTitle),makeList);
+  if (listInputTitle != '') {
+    makeList.parentNode.insertBefore(
+      createAnotherList(listInputTitle),
+      makeList
+    );
   }
-  
 });
 
-function createAnotherList(title){
+const addCardNewList = (e, addCard, addCardBottom, card, columnDiv) => {
+  if ((editInput.style.display = '')) {
+    editInput.style.display = 'none';
+  }
+
+  console.log(addCard.style);
+
+  editInput.style.display = 'none';
+
+  console.log(e);
+  input.style.display = 'block';
+  input.classList.add('input-add');
+  const inputVal = input.value;
+  let parentColumn;
+
+  if (e.path[2].classList[1] === 'column') {
+    parentColumn = Number(e.path[2].classList[0].slice(-1)) - 1;
+  } else {
+    parentColumn = Number(e.path[3].classList[0].slice(-1)) - 1;
+  }
+
+  const noviDiv = document.createElement('div');
+  noviDiv.appendChild(input);
+
+  addCard.style.display = 'none';
+  addCardBottom.style.display = 'flex';
+
+  //   cards[parentColumn].style.display = 'block';
+  card.classList.toggle('card-add');
+  columnDiv.insertBefore(noviDiv, addCard);
+
+  console.log(inputVal);
+};
+
+const showCardNewList = (e, card, columnDiv, addCard, addCardBottom) => {
+  const inputVal = input.value;
+  if (inputVal === '') {
+    input.style.display = 'none';
+    addCardBottoms[parentColumn].style.display = 'none';
+    addCards[parentColumn].style.display = 'flex';
+    return;
+  }
+  input.value = '';
+
+  const inputItem = document.createElement('div');
+  inputItem.classList.add('input-item');
+
+  inputItem.innerHTML = inputVal;
+
+  input.style.display = 'none';
+  addCardBottom.style.display = 'none';
+  addCard.style.display = 'flex';
+
+  const cardDiv = document.createElement('div');
+  cardDiv.classList.add('card');
+  const cardLeftDiv = document.createElement('div');
+  cardLeftDiv.classList.add('card-left-part');
+  const cardPlusDiv = document.createElement('div');
+  const cardPlusIcon = document.createElement('i');
+  cardPlusIcon.classList.add('fas');
+  cardPlusIcon.classList.add('fa-align-left');
+  const cardRightDiv = document.createElement('div');
+  cardRightDiv.classList.add('card-right-part');
+  const cardRightA = document.createElement('a');
+  const cardRightSpan = document.createElement('span');
+  const cardRightIcon = document.createElement('i');
+
+  cardRightDiv.addEventListener('click', (e) =>
+    inputEditedNewList(e, addCard, columnDiv)
+  );
+
+  cardRightIcon.classList.add('fas');
+  cardRightIcon.classList.add('fa-pencil-alt');
+
+  cardLeftDiv.appendChild(inputItem);
+
+  cardPlusDiv.appendChild(cardPlusIcon);
+  cardLeftDiv.appendChild(cardPlusDiv);
+  cardDiv.appendChild(cardLeftDiv);
+
+  cardRightSpan.appendChild(cardRightIcon);
+  cardRightA.appendChild(cardRightSpan);
+  cardRightDiv.appendChild(cardRightA);
+  cardDiv.appendChild(cardRightDiv);
+
+  cardDiv.style.display = 'flex';
+
+  columnDiv.insertBefore(cardDiv, addCard);
+};
+
+const saveChangesNewList = (parentColumn, path, saveDiv, addCard) => {
+  if (path[2].classList[0] === 'card') {
+    addCard.style.display = 'flex';
+    editInput.style.display = 'none';
+    path[2].firstChild.firstChild.innerHTML = editInput.value;
+    path[2].style.display = 'flex';
+  } else if (path[4].classList[0] === 'card') {
+    addCard.style.display = 'flex';
+    editInput.style.display = 'none';
+    path[4].firstChild.firstChild.innerHTML = editInput.value;
+    path[4].style.display = 'flex';
+  } else if (path[3].classList[0] === 'card') {
+    addCard.style.display = 'flex';
+    editInput.style.display = 'none';
+    path[3].firstChild.firstChild.innerHTML = editInput.value;
+    path[3].style.display = 'flex';
+  }
+  saveDiv.style.display = 'none';
+};
+
+const closeEditNewList = (path, saveDiv, parentColumn, addCard) => {
+  if (path[2].classList[0] === 'card') {
+    addCard.style.display = 'flex';
+    editInput.style.display = 'none';
+    path[2].style.display = 'flex';
+  } else if (path[4].classList[0] === 'card') {
+    addCard.style.display = 'flex';
+    editInput.style.display = 'none';
+    path[4].style.display = 'flex';
+  } else if (path[3].classList[0] === 'card') {
+    addCard.style.display = 'flex';
+    editInput.style.display = 'none';
+    path[3].style.display = 'flex';
+  }
+  saveDiv.style.display = 'none';
+};
+
+const inputEditedNewList = (e, addCard, columnDiv) => {
+  const saveDiv = document.createElement('div');
+  saveDiv.classList.add('add-card-bottom');
+  console.log(addCard);
+
+  const saveButton = document.createElement('div');
+  saveButton.classList.add('add-card-button');
+  saveButton.innerHTML = 'Save';
+  saveButton.addEventListener('click', () =>
+    saveChangesNewList(columnDiv, e.path, saveDiv, addCard)
+  );
+
+  const closeIcon = document.createElement('i');
+  closeIcon.classList.add('fas');
+  closeIcon.classList.add('fa-times');
+  closeIcon.addEventListener('click', () =>
+    closeEditNewList(e.path, saveDiv, columnDiv, addCard)
+  );
+
+  saveDiv.style.display = 'flex';
+
+  saveDiv.appendChild(saveButton);
+  saveDiv.appendChild(closeIcon);
+
+  editInput.classList.add('input-add');
+
+  addCard.style.display = 'none';
+
+  if (e.path[2].classList[0] === 'card') {
+    columnDiv.insertBefore(editInput, e.path[2]);
+    columnDiv.insertBefore(saveDiv, e.path[2]);
+    editInput.style.display = 'block';
+    editInput.focus();
+    editInput.value = e.path[2].firstChild.firstChild.textContent;
+    e.path[2].style.display = 'none';
+  } else if (e.path[4].classList[0] === 'card') {
+    columnDiv.insertBefore(editInput, e.path[4]);
+    columnDiv.insertBefore(saveDiv, e.path[4]);
+    editInput.style.display = 'block';
+    editInput.focus();
+    editInput.value = e.path[4].firstChild.firstChild.textContent;
+    e.path[4].style.display = 'none';
+  } else if (e.path[3].classList[0] === 'card') {
+    columnDiv.insertBefore(editInput, e.path[3]);
+    columnDiv.insertBefore(saveDiv, e.path[3]);
+
+    editInput.style.display = 'block';
+    editInput.focus();
+    editInput.value = e.path[3].firstChild.firstChild.textContent;
+    e.path[3].style.display = 'none';
+  }
+};
+
+function createAnotherList(title) {
   let columnDiv = document.createElement('div');
-  columnDiv.classList.add("column");
+  columnDiv.classList.add('column');
 
   let listTitle = document.createElement('div');
   listTitle.classList.add('list-title');
@@ -347,7 +525,7 @@ function createAnotherList(title){
   linkPoints.appendChild(points);
   listTitle.appendChild(titleDiv);
   listTitle.appendChild(linkPoints);
-  
+
   let card = document.createElement('div');
   card.classList.add('card');
   let cardLeftPart = document.createElement('div');
@@ -379,7 +557,7 @@ function createAnotherList(title){
   iPlus.classList.add('fas');
   iPlus.classList.add('fa-plus');
   let spanText = document.createElement('span');
-  spanText.innerHTML = "Add a card";
+  spanText.innerHTML = 'Add a card';
   addBtn.appendChild(iPlus);
   addBtn.appendChild(spanText);
   let linkTemp = document.createElement('a');
@@ -394,17 +572,24 @@ function createAnotherList(title){
   addCardBottom.classList.add('add-card-bottom');
   let addCardButton = document.createElement('div');
   addCardButton.classList.add('add-card-button');
-  addCardButton.innerHTML = "Add Card";
+  addCardButton.innerHTML = 'Add Card';
   let iClose = document.createElement('i');
   iClose.classList.add('fas');
   iClose.classList.add('fa-times');
   addCardBottom.appendChild(addCardButton);
   addCardBottom.appendChild(iClose);
 
+  addCardButton.addEventListener('click', (e) =>
+    showCardNewList(e, card, columnDiv, addCard, addCardBottom)
+  );
+  addBtn.addEventListener('click', (e) =>
+    addCardNewList(e, addCard, addCardBottom, card, columnDiv)
+  );
+
   columnDiv.appendChild(listTitle);
   columnDiv.appendChild(card);
   columnDiv.appendChild(addCard);
   columnDiv.appendChild(addCardBottom);
+
   return columnDiv;
 }
-
