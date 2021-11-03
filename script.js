@@ -1,3 +1,4 @@
+const content = document.querySelector('.content');
 const card = document.querySelectorAll('.card');
 const addButton = document.querySelectorAll('.add-button');
 const cardLeftPart = document.querySelectorAll('.card-left-part');
@@ -7,6 +8,7 @@ const addCardButton = document.querySelectorAll('.add-card-button');
 const column = document.querySelectorAll('.column');
 const closeItem = document.querySelectorAll('.fa-times');
 
+
 const closeButtons = [];
 const columns = [];
 const addCardButtons = [];
@@ -14,6 +16,7 @@ const addCardBottoms = [];
 const addCards = [];
 const cardLeftNiz = [];
 const cards = [];
+
 
 column.forEach((column) => {
   columns.push(column);
@@ -254,10 +257,154 @@ const showCard = (e) => {
   columns[parentColumn].insertBefore(cardDiv, addCards[parentColumn]);
 };
 
+
 addButton.forEach((button) => {
   button.addEventListener('click', addingCard);
 });
 
+
 addCardButton.forEach((button) => {
   button.addEventListener('click', showCard);
 });
+
+//------------------------------------------------------
+
+
+function divAnotherList(){
+  let anotherDiv = document.createElement('div');
+  anotherDiv.classList.add('make-list');
+  anotherDiv.classList.add('light-bg');
+  let anotherI = document.createElement('i');
+  anotherI.classList.add('fas');
+  anotherI.classList.add('fa-plus');
+  let anotherSpan = document.createElement('span');
+  anotherSpan.innerHTML = "Add another list";
+  anotherSpan.style.marginLeft = "5px";
+  anotherDiv.appendChild(anotherI);
+  anotherDiv.appendChild(anotherSpan);
+  content.appendChild(anotherDiv);
+  content.appendChild(createListForm());
+}
+
+divAnotherList();
+
+function createListForm(){
+  let form = document.createElement('div');
+  form.classList.add('form');
+  let formInput = document.createElement('input');
+  formInput.placeholder = "Enter list title...";
+  formInput.classList.add('list-form-input');
+  let listBottomDiv = document.createElement('div');
+  listBottomDiv.classList.add('make-list-bottom');
+  let addListButton = document.createElement('div');
+  addListButton.innerHTML = "Add list";
+  let closeList = document.createElement('i');
+  closeList.classList.add('fas');
+  closeList.classList.add('fa-times');
+  listBottomDiv.appendChild(addListButton);
+  listBottomDiv.appendChild(closeList);
+  form.appendChild(formInput);
+  form.appendChild(listBottomDiv);
+  return form;
+}
+
+function closeForm(hide,show){
+  hide.style.display = "none";
+  show.style.display = "";
+}
+
+var makeList = document.querySelector('.make-list');
+var formDiv = document.querySelector('.form');
+
+makeList.addEventListener('click',()=>{
+    makeList.style.display = "none";
+    formDiv.style.display = "flex";
+  });
+
+formDiv.lastChild.lastChild.addEventListener('click', ()=>{
+  closeForm(formDiv,makeList);
+});
+formDiv.lastChild.firstChild.addEventListener('click',()=>{
+  let listInputTitle = document.querySelector('.list-form-input').value;
+  if(listInputTitle != ""){
+    makeList.parentNode.insertBefore(createAnotherList(listInputTitle),makeList);
+  }
+  
+});
+
+function createAnotherList(title){
+  let columnDiv = document.createElement('div');
+  columnDiv.classList.add("column");
+
+  let listTitle = document.createElement('div');
+  listTitle.classList.add('list-title');
+  let titleDiv = document.createElement('div');
+  titleDiv.innerHTML = title;
+  let linkPoints = document.createElement('a');
+  let points = document.createElement('i');
+  points.classList.add('fas');
+  points.classList.add('fa-ellipsis-h');
+  linkPoints.appendChild(points);
+  listTitle.appendChild(titleDiv);
+  listTitle.appendChild(linkPoints);
+  
+  let card = document.createElement('div');
+  card.classList.add('card');
+  let cardLeftPart = document.createElement('div');
+  cardLeftPart.classList.add('card-left-part');
+  let cardRightPart = document.createElement('div');
+  cardRightPart.classList.add('card-right-part');
+  let divLeft = document.createElement('div');
+  let alignIcon = document.createElement('i');
+  alignIcon.classList.add('fas');
+  alignIcon.classList.add('fa-align-left');
+  divLeft.appendChild(alignIcon);
+  cardLeftPart.appendChild(divLeft);
+  let linkPencil = document.createElement('a');
+  let linkSpan = document.createElement('span');
+  let linkI = document.createElement('i');
+  linkI.classList.add('fas');
+  linkI.classList.add('fa-pencil-alt');
+  linkSpan.appendChild(linkI);
+  linkPencil.appendChild(linkSpan);
+  cardRightPart.appendChild(linkPencil);
+  card.appendChild(cardLeftPart);
+  card.appendChild(cardRightPart);
+
+  let addCard = document.createElement('div');
+  addCard.classList.add('add-card');
+  let addBtn = document.createElement('div');
+  addBtn.classList.add('add-button');
+  let iPlus = document.createElement('i');
+  iPlus.classList.add('fas');
+  iPlus.classList.add('fa-plus');
+  let spanText = document.createElement('span');
+  spanText.innerHTML = "Add a card";
+  addBtn.appendChild(iPlus);
+  addBtn.appendChild(spanText);
+  let linkTemp = document.createElement('a');
+  let iTemp = document.createElement('i');
+  iTemp.classList.add('fas');
+  iTemp.classList.add('fa-pager');
+  linkTemp.appendChild(iTemp);
+  addCard.appendChild(addBtn);
+  addCard.appendChild(linkTemp);
+
+  let addCardBottom = document.createElement('div');
+  addCardBottom.classList.add('add-card-bottom');
+  let addCardButton = document.createElement('div');
+  addCardButton.classList.add('add-card-button');
+  addCardButton.innerHTML = "Add Card";
+  let iClose = document.createElement('i');
+  iClose.classList.add('fas');
+  iClose.classList.add('fa-times');
+  addCardBottom.appendChild(addCardButton);
+  addCardBottom.appendChild(iClose);
+
+  columnDiv.appendChild(listTitle);
+  columnDiv.appendChild(card);
+  columnDiv.appendChild(addCard);
+  columnDiv.appendChild(addCardBottom);
+  return columnDiv;
+}
+
