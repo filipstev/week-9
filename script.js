@@ -416,8 +416,26 @@ const showCardNewList = (e, card, columnDiv, addCard, addCardBottom) => {
   cardDiv.style.display = 'flex';
 
   columnDiv.insertBefore(cardDiv, addCard);
-  saveItem(columnDiv);
-  console.log(columnDiv.outerHTML);
+
+  if (
+    columnDiv.classList[0] !== 'column-1' &&
+    columnDiv.classList[0] !== 'column-2' &&
+    columnDiv.classList[0] !== 'column-3' &&
+    columnDiv.classList[0] !== 'column-4'
+  ) {
+    saveItem(columnDiv);
+  }
+
+  if (columnDiv.classList[0] === 'column-1') {
+    localStorage.setItem('column-1', columnDiv.outerHTML);
+  } else if (columnDiv.classList[0] === 'column-2') {
+    localStorage.setItem('column-2', columnDiv.outerHTML);
+  } else if (columnDiv.classList[0] === 'column-3') {
+    localStorage.setItem('column-3', columnDiv.outerHTML);
+  } else if (columnDiv.classList[0] === 'column-4') {
+    localStorage.setItem('column-4', columnDiv.outerHTML);
+  }
+
   getCards();
   getDropeZones();
 };
@@ -440,7 +458,26 @@ const saveChangesNewList = (parentColumn, path, saveDiv, addCard) => {
     path[3].style.display = 'flex';
   }
   saveDiv.style.display = 'none';
-  saveItem(parentColumn);
+  if (
+    parentColumn.classList[0] !== 'column-1' &&
+    parentColumn.classList[0] !== 'column-2' &&
+    parentColumn.classList[0] !== 'column-3' &&
+    parentColumn.classList[0] !== 'column-4'
+  ) {
+    saveItem(parentColumn);
+  }
+
+  console.log('ODAVDEEEEEEEEEEEEEEEEEEEEEEEEE');
+
+  if (parentColumn.classList[0] === 'column-1') {
+    localStorage.setItem('column-1', parentColumn.outerHTML);
+  } else if (parentColumn.classList[0] === 'column-2') {
+    localStorage.setItem('column-2', parentColumn.outerHTML);
+  } else if (parentColumn.classList[0] === 'column-3') {
+    localStorage.setItem('column-3', parentColumn.outerHTML);
+  } else if (parentColumn.classList[0] === 'column-4') {
+    localStorage.setItem('column-4', parentColumn.outerHTML);
+  }
 };
 
 const closeEditNewList = (path, saveDiv, parentColumn, addCard) => {
@@ -512,6 +549,8 @@ const inputEditedNewList = (e, addCard, columnDiv) => {
     e.path[3].style.display = 'none';
   }
 };
+
+// localStorage.clear();
 
 const closeInputNewList = (e, addCard, addCardBottom) => {
   input.value = '';
@@ -618,7 +657,7 @@ function createAnotherList(title) {
 function saveItem(list) {
   let lists = '';
 
-  lists += list.outerHTML + '*';
+  lists += list.outerHTML;
   localStorage.setItem('lists', lists);
 }
 
@@ -630,23 +669,30 @@ function saveItem(list) {
 //   let columnDiv = obj.firstChild;
 // };
 
+// localStorage.clear();
+
 window.addEventListener('load', () => {
   const list = localStorage.getItem('lists');
   // console.log(lists);
   // const list = lists.split('*')[0];
-  // console.log(lists.split('*'));
   // localStorage.clear();
   const list1 = localStorage.getItem('column-1');
-  getPredefinedListFromStorage(list1);
-  // console.log(list1);
-
-  // getListFromStorage(list);
+  const list2 = localStorage.getItem('column-2');
+  const list3 = localStorage.getItem('column-3');
+  const list4 = localStorage.getItem('column-4');
+  list1 !== null ? getPredefinedListFromStorage(list1) : null;
+  list2 !== null ? getPredefinedListFromStorage(list2) : null;
+  list3 !== null ? getPredefinedListFromStorage(list3) : null;
+  list4 !== null ? getPredefinedListFromStorage(list4) : null;
+  const newList = localStorage.getItem('lists');
+  newList !== null ? getListFromStorage(newList) : null;
 });
+
+// localStorage.clear();
 
 const getListFromStorage = (list) => {
   const htmlObject = document.createElement('div');
   htmlObject.innerHTML = list;
-  // console.log(list);
 
   let addCard = htmlObject.firstChild.lastChild.previousSibling;
   let addCardBottom = htmlObject.firstChild.lastChild;
@@ -684,10 +730,8 @@ const getPredefinedListFromStorage = (list) => {
   let columnDiv = htmlObject.firstChild;
 
   let cards = columnDiv.querySelectorAll('.card');
-  console.log(cards);
 
   cards.forEach((card) => {
-    console.log(card.lastChild);
     card.lastChild.addEventListener('click', (e) =>
       inputEditedNewList(e, addCard, columnDiv)
     );
@@ -701,9 +745,13 @@ const getPredefinedListFromStorage = (list) => {
     showCardNewList(e, card, columnDiv, addCard, addCardBottom);
   });
 
-  document.querySelector('.column-1').outerHTML = list;
-  // document.querySelector('.column-1').replaceWith(JSON.parse(list));
+  document
+    .querySelector('.column-' + htmlObject.firstChild.classList[0].slice(-1))
+    .replaceWith(htmlObject);
 };
+
+localStorage.clear();
+
 //--drag and drop------------------------------
 
 function getCards() {
