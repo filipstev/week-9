@@ -7,6 +7,11 @@ const addCardBottom = document.querySelectorAll('.add-card-bottom');
 const addCardButton = document.querySelectorAll('.add-card-button');
 const column = document.querySelectorAll('.column');
 const closeItem = document.querySelectorAll('.fa-times');
+const divone = document.querySelector('.cao-one');
+const divtwo = document.querySelector('.cao-two');
+var madeCards;
+var dropeZones;
+var draggableItem = null;
 
 const closeButtons = [];
 const columns = [];
@@ -167,7 +172,6 @@ const addingCard = (e) => {
 
   editInput.style.display = 'none';
 
-  console.log(e);
   input.style.display = 'block';
   input.classList.add('input-add');
   const inputVal = input.value;
@@ -188,8 +192,6 @@ const addingCard = (e) => {
   //   cards[parentColumn].style.display = 'block';
   cards[parentColumn].classList.toggle('card-add');
   columns[parentColumn].insertBefore(noviDiv, addCards[parentColumn]);
-
-  console.log(inputVal);
 };
 
 const showCard = (e) => {
@@ -249,7 +251,6 @@ const showCard = (e) => {
   cardRightDiv.appendChild(cardRightA);
   cardDiv.appendChild(cardRightDiv);
 
-  console.log(cardDiv);
   cardDiv.style.display = 'flex';
 
   columns[parentColumn].insertBefore(cardDiv, addCards[parentColumn]);
@@ -259,6 +260,8 @@ const showCard = (e) => {
     'column-' + (parentColumn + 1),
     columns[parentColumn].outerHTML
   );
+
+  getCards();
 };
 
 addButton.forEach((button) => {
@@ -333,6 +336,8 @@ formDiv.lastChild.firstChild.addEventListener('click', () => {
       createAnotherList(listInputTitle),
       makeList
     );
+    getDropeZones();
+    getCards();
   }
 });
 
@@ -413,6 +418,8 @@ const showCardNewList = (e, card, columnDiv, addCard, addCardBottom) => {
   columnDiv.insertBefore(cardDiv, addCard);
   saveItem(columnDiv);
   console.log(columnDiv.outerHTML);
+  getCards();
+  getDropeZones();
 };
 
 const saveChangesNewList = (parentColumn, path, saveDiv, addCard) => {
@@ -697,3 +704,63 @@ const getPredefinedListFromStorage = (list) => {
   document.querySelector('.column-1').outerHTML = list;
   // document.querySelector('.column-1').replaceWith(JSON.parse(list));
 };
+//--drag and drop------------------------------
+
+function getCards() {
+  madeCards = document.querySelectorAll('.card');
+
+  madeCards.forEach((item) => {
+    item.setAttribute('draggable', 'true');
+    item.addEventListener('dragstart', dragStart);
+    item.addEventListener('dragend', dragEnd);
+  });
+}
+
+getDropeZones();
+
+function getDropeZones() {
+  dropeZones = document.querySelectorAll('.column');
+  dropeZones.forEach((status) => {
+    status.addEventListener('dragover', dragOver);
+    status.addEventListener('drop', dragDrop);
+  });
+}
+
+function dragStart() {
+  draggableItem = this;
+  draggableItem.classList.add('.dragging');
+}
+function dragEnd() {
+  draggableItem = null;
+}
+let cardAfterDragingCard;
+function dragOver(e) {
+  e.preventDefault();
+  cardAfterDragingCard = getCardAfterDragingCard(this, e.clientY);
+  if (cardAfterDragingCard) {
+    this.insertBefore(draggableItem, cardAfterDragingCard);
+  } else {
+    this.appendChild(draggableItem);
+  }
+  this.insertBefore(draggableItem, this.querySelector('.add-card'));
+}
+
+function dragDrop() {
+  this.insertBefore(draggableItem, cardAfterDragingCard);
+}
+
+function getCardAfterDragingCard(dropeZone, yDraggingCard) {
+  let dropeZoneCards = [...dropeZone.querySelectorAll('.card:not(.dragging)')];
+  return dropeZoneCards.reduce(
+    (closestCard, nextCard) => {
+      let nextCardRect = nextCard.getBoundingClientRect();
+      let offset = yDraggingCard - nextCardRect.top - nextCardRect.height;
+      if (offset < 0 && offset > closestCard.offset) {
+        return { offset, element: nextCard };
+      } else {
+        return closestCard;
+      }
+    },
+    { offset: Number.NEGATIVE_INFINITY }
+  ).element;
+}
