@@ -773,13 +773,60 @@ function getDropeZones() {
   });
 }
 
-function dragStart() {
+function dragStart(e) {
   draggableItem = this;
   draggableItem.classList.add('.dragging');
+
+  console.log(draggableItem.parentNode);
+
+  draggableItem.parentNode.addEventListener('mouseleave', () => {
+    console.log('HEJ');
+    if (
+      e.path[1].classList[0] !== 'column-1' &&
+      e.path[1].classList[0] !== 'column-2' &&
+      e.path[1].classList[0] !== 'column-3' &&
+      e.path[1].classList[0] !== 'column-4'
+    ) {
+      saveItem(e.path[1]);
+    }
+
+    if (e.path[1].classList[0] === 'column-1') {
+      localStorage.setItem('column-1', e.path[1].outerHTML);
+    } else if (e.path[1].classList[0] === 'column-2') {
+      localStorage.setItem('column-2', e.path[1].outerHTML);
+    } else if (e.path[1].classList[0] === 'column-3') {
+      localStorage.setItem('column-3', e.path[1].outerHTML);
+    } else if (e.path[1].classList[0] === 'column-4') {
+      localStorage.setItem('column-4', e.path[1].outerHTML);
+    }
+  });
 }
-function dragEnd() {
+
+function dragEnd(e) {
+  if (
+    e.path[1].classList[0] !== 'column-1' &&
+    e.path[1].classList[0] !== 'column-2' &&
+    e.path[1].classList[0] !== 'column-3' &&
+    e.path[1].classList[0] !== 'column-4'
+  ) {
+    saveItem(e.path[1]);
+  }
+
+  if (e.path[1].classList[0] === 'column-1') {
+    localStorage.setItem('column-1', e.path[1].outerHTML);
+  } else if (e.path[1].classList[0] === 'column-2') {
+    localStorage.setItem('column-2', e.path[1].outerHTML);
+  } else if (e.path[1].classList[0] === 'column-3') {
+    localStorage.setItem('column-3', e.path[1].outerHTML);
+  } else if (e.path[1].classList[0] === 'column-4') {
+    localStorage.setItem('column-4', e.path[1].outerHTML);
+  }
+
   draggableItem = null;
 }
+
+// localStorage.clear();
+
 let cardAfterDragingCard;
 function dragOver(e) {
   e.preventDefault();
