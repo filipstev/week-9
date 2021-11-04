@@ -682,9 +682,12 @@ window.addEventListener('load', () => {
   list4 !== null ? getPredefinedListFromStorage(list4) : null;
   const newList = localStorage.getItem('lists');
   newList !== null ? getListFromStorage(newList) : null;
+
+  getCards();
+  getDropeZones();
 });
 
-// localStorage.clear();
+//localStorage.clear();
 
 const getListFromStorage = (list) => {
   const htmlObject = document.createElement('div');
