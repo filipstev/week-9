@@ -12,6 +12,9 @@ const divtwo = document.querySelector('.cao-two');
 var madeCards;
 var dropeZones;
 var draggableItem = null;
+var draggingColumns;
+var dropContent;
+var draggableColumn = null;
 
 const closeButtons = [];
 const columns = [];
@@ -438,6 +441,8 @@ const showCardNewList = (e, card, columnDiv, addCard, addCardBottom) => {
 
   getCards();
   getDropeZones();
+  getDraggingColumns();
+  reorderLists();
 };
 
 const saveChangesNewList = (parentColumn, path, saveDiv, addCard) => {
@@ -685,9 +690,11 @@ window.addEventListener('load', () => {
 
   getCards();
   getDropeZones();
+  getDraggingColumns();
+  reorderLists();
 });
 
-//localStorage.clear();
+localStorage.clear();
 
 const getListFromStorage = (list) => {
   const htmlObject = document.createElement('div');
@@ -752,6 +759,69 @@ const getPredefinedListFromStorage = (list) => {
 };
 
 //--drag and drop------------------------------
+
+function getDraggingColumns(){
+  draggingColumns = document.querySelectorAll('.column');
+
+  draggingColumns.forEach((col)=>{
+    col.setAttribute('draggable', 'true');
+    col.addEventListener('dragstart', dragColumnStart);
+    col.addEventListener('dragend', dragColumnEnd);
+  });
+}
+
+
+function reorderLists(){
+  dropContent = document.querySelector('.content');
+  dropContent.addEventListener('dragover', dragListOver);
+  dropContent.addEventListener('drop', dragListDrop);
+}
+
+function dragColumnStart(){
+  draggableColumn = this;
+  draggableColumn.classList.add('.dragging-column');
+}
+
+function dragColumnEnd(){
+  draggableColumn = null;
+}
+
+let columnAfterDraggingColumn;
+
+function dragListOver(e){
+  e.preventDefault();
+  columnAfterDraggingColumn = getColumnAfterDraggingColumn(this, e.clientX);
+
+ if(columnAfterDraggingColumn){
+    this.insertBefore(draggableColumn, columnAfterDraggingColumn);
+  }
+    else {
+      this.appendChild(draggableColumn);
+      this.insertBefore(draggableColumn, this.querySelector('.make-list'));
+    }
+}
+
+function dragListDrop(){
+  this.insertBefore(draggableColumn, this.querySelector('.make-list'));
+  this.insertBefore(draggableColumn, columnAfterDraggingColumn);
+}
+
+function getColumnAfterDraggingColumn(dropeContent, xDraggingColumn) {
+  let dropeContentColumns = [...dropeContent.querySelectorAll('.column:not(.dragging-column)')];
+  return dropeContentColumns.reduce(
+    (closestColumn, nextColumn) => {
+      let nextColumnRect = nextColumn.getBoundingClientRect();
+      let offset = xDraggingColumn - nextColumnRect.left- nextColumnRect.width/3;
+      if (offset < 0 && offset > closestColumn.offset) {
+        return { offset, element: nextColumn };
+      } else {
+        return closestColumn;
+      }
+    },
+    { offset: Number.NEGATIVE_INFINITY }
+  ).element;
+}
+
 
 function getCards() {
   madeCards = document.querySelectorAll('.card');
