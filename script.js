@@ -253,6 +253,12 @@ const showCard = (e) => {
   cardDiv.style.display = 'flex';
 
   columns[parentColumn].insertBefore(cardDiv, addCards[parentColumn]);
+  // console.log(columns[parentColumn].outerHTML);
+  // console.log(columns[parentColumn]);
+  localStorage.setItem(
+    'column-' + (parentColumn + 1),
+    columns[parentColumn].outerHTML
+  );
 };
 
 addButton.forEach((button) => {
@@ -405,6 +411,8 @@ const showCardNewList = (e, card, columnDiv, addCard, addCardBottom) => {
   cardDiv.style.display = 'flex';
 
   columnDiv.insertBefore(cardDiv, addCard);
+  saveItem(columnDiv);
+  console.log(columnDiv.outerHTML);
 };
 
 const saveChangesNewList = (parentColumn, path, saveDiv, addCard) => {
@@ -425,6 +433,7 @@ const saveChangesNewList = (parentColumn, path, saveDiv, addCard) => {
     path[3].style.display = 'flex';
   }
   saveDiv.style.display = 'none';
+  saveItem(parentColumn);
 };
 
 const closeEditNewList = (path, saveDiv, parentColumn, addCard) => {
@@ -592,6 +601,99 @@ function createAnotherList(title) {
   columnDiv.appendChild(card);
   columnDiv.appendChild(addCard);
   columnDiv.appendChild(addCardBottom);
+  localStorage.setItem('list', JSON.stringify(columnDiv));
+
+  saveItem(columnDiv);
 
   return columnDiv;
 }
+
+function saveItem(list) {
+  let lists = '';
+
+  lists += list.outerHTML + '*';
+  localStorage.setItem('lists', lists);
+}
+
+// const makeNewList = (obj) => {
+//   let addCard = obj.firstChild.firstChild.nextSibling.nextSibling;
+//   let addCardBottom =
+//     obj.firstChild.firstChild.nextSibling.nextSibling.nextSibling;
+//   let card = obj.firstChild.firstChild.nextSibling;
+//   let columnDiv = obj.firstChild;
+// };
+
+window.addEventListener('load', () => {
+  const list = localStorage.getItem('lists');
+  // console.log(lists);
+  // const list = lists.split('*')[0];
+  // console.log(lists.split('*'));
+  // localStorage.clear();
+  const list1 = localStorage.getItem('column-1');
+  getPredefinedListFromStorage(list1);
+  // console.log(list1);
+
+  // getListFromStorage(list);
+});
+
+const getListFromStorage = (list) => {
+  const htmlObject = document.createElement('div');
+  htmlObject.innerHTML = list;
+  // console.log(list);
+
+  let addCard = htmlObject.firstChild.lastChild.previousSibling;
+  let addCardBottom = htmlObject.firstChild.lastChild;
+  let card = htmlObject.firstChild.firstChild.nextSibling;
+  let columnDiv = htmlObject.firstChild;
+
+  let cards = columnDiv.querySelectorAll('.card');
+
+  cards.forEach((card) => {
+    card.lastChild.addEventListener('click', (e) =>
+      inputEditedNewList(e, addCard, columnDiv)
+    );
+  });
+
+  addCard.addEventListener('click', (e) =>
+    addCardNewList(e, addCard, addCardBottom, card, columnDiv)
+  );
+
+  addCardBottom.addEventListener('click', (e) => {
+    showCardNewList(e, card, columnDiv, addCard, addCardBottom);
+  });
+
+  makeList.parentNode.insertBefore(htmlObject, makeList);
+};
+
+const getPredefinedListFromStorage = (list) => {
+  const htmlObject = document.createElement('div');
+  htmlObject.innerHTML = list;
+
+  let addCard =
+    htmlObject.firstChild.lastChild.previousSibling.previousSibling
+      .previousSibling;
+  let addCardBottom = htmlObject.firstChild.lastChild.previousSibling;
+  let card = htmlObject.firstChild.firstChild.nextSibling;
+  let columnDiv = htmlObject.firstChild;
+
+  let cards = columnDiv.querySelectorAll('.card');
+  console.log(cards);
+
+  cards.forEach((card) => {
+    console.log(card.lastChild);
+    card.lastChild.addEventListener('click', (e) =>
+      inputEditedNewList(e, addCard, columnDiv)
+    );
+  });
+
+  addCard.addEventListener('click', (e) =>
+    addCardNewList(e, addCard, addCardBottom, card, columnDiv)
+  );
+
+  addCardBottom.addEventListener('click', (e) => {
+    showCardNewList(e, card, columnDiv, addCard, addCardBottom);
+  });
+
+  document.querySelector('.column-1').outerHTML = list;
+  // document.querySelector('.column-1').replaceWith(JSON.parse(list));
+};
