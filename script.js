@@ -467,8 +467,6 @@ const saveChangesNewList = (parentColumn, path, saveDiv, addCard) => {
     saveItem(parentColumn);
   }
 
-  console.log('ODAVDEEEEEEEEEEEEEEEEEEEEEEEEE');
-
   if (parentColumn.classList[0] === 'column-1') {
     localStorage.setItem('column-1', parentColumn.outerHTML);
   } else if (parentColumn.classList[0] === 'column-2') {
@@ -549,8 +547,6 @@ const inputEditedNewList = (e, addCard, columnDiv) => {
     e.path[3].style.display = 'none';
   }
 };
-
-// localStorage.clear();
 
 const closeInputNewList = (e, addCard, addCardBottom) => {
   input.value = '';
@@ -745,12 +741,13 @@ const getPredefinedListFromStorage = (list) => {
     showCardNewList(e, card, columnDiv, addCard, addCardBottom);
   });
 
+  getDropeZones();
+  getCards();
+
   document
     .querySelector('.column-' + htmlObject.firstChild.classList[0].slice(-1))
     .replaceWith(htmlObject);
 };
-
-localStorage.clear();
 
 //--drag and drop------------------------------
 
