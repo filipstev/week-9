@@ -802,7 +802,6 @@ function dragListOver(e){
 }
 
 function dragListDrop(){
-  this.insertBefore(draggableColumn, this.querySelector('.make-list'));
   this.insertBefore(draggableColumn, columnAfterDraggingColumn);
 }
 
