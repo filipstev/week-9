@@ -733,6 +733,8 @@ const getPredefinedListFromStorage = (list) => {
     );
   });
 
+  // getDropeZonesStorage(columns);
+
   addCard.addEventListener('click', (e) =>
     addCardNewList(e, addCard, addCardBottom, card, columnDiv)
   );
@@ -740,9 +742,6 @@ const getPredefinedListFromStorage = (list) => {
   addCardBottom.addEventListener('click', (e) => {
     showCardNewList(e, card, columnDiv, addCard, addCardBottom);
   });
-
-  getDropeZones();
-  getCards();
 
   document
     .querySelector('.column-' + htmlObject.firstChild.classList[0].slice(-1))
