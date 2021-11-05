@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/d3207104f7.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Trello Clone</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-left">
+                <a href="#" class="trello-logo"><i class="fab fa-trello"></i> Trello</a>
+                <a href="#">Workspaces <i class="fas fa-chevron-down"></i></a>
+                <a href="#" class="more">More <i class="fas fa-chevron-down"></i></a>
+                <a href="#">Recent <i class="fas fa-chevron-down"></i></a>
+                <a href="#">Starred <i class="fas fa-chevron-down"></i></a>
+                <a href="#">Templates <i class="fas fa-chevron-down"></i></a>
+                <a href="#">Create <i class="fas fa-chevron-down"></i></a>
+            </div>
+            <div class="navbar-right">
+                <i class="fa fa-search"></i>
+                <input placeholder="Search" class="search"/>
+                <div class="profile-photo">
+                    <img src="./assets/profile.jfif"/>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="inner-header">
+            <div class="inner-left">
+                <div class="title">
+                    <h3>FE grupa 2</h3>
+                    <i class="far fa-star light-bg"></i> 
+                </div>
+                <div class="private-workspace">
+                    <span>Private Workspace</span>
+                </div>
+                <div class="workplace-visible light-bg">
+                    <i class="fas fa-user-friends"></i> 
+                    <span>Workplace visible</span>
+                </div>
+                <div class="icons">
+                    <span>SL</span>
+                    <span>PT</span>
+                    <span>LS</span>
+                    <span>PR</span>
+                    <span>SF</span>
+                </div>
+                <div class="invite light-bg">
+                    <span>Invite</span>
+                </div>
+            </div>
+            <div class="inner-right">
+                <div class="automation light-bg">
+                   <span>Reset Storage</span>
+                </div>
+                <div class="filter-menu">
+                    <span class="divider"></span>
+                    <div class="filter light-bg">
+                        <svg width="16" height="16" role="presentation" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M4.61799 6C3.87461 6 3.39111 6.78231 3.72356 7.44721L3.99996 8H20L20.2763 7.44721C20.6088 6.78231 20.1253 6 19.3819 6H4.61799ZM10.8618 17.7236C10.9465 17.893 11.1196 18 11.309 18H12.6909C12.8803 18 13.0535 17.893 13.1382 17.7236L14 16H9.99996L10.8618 17.7236ZM17 13H6.99996L5.99996 11H18L17 13Z" fill="currentColor"></path>
+                        </svg>
+                        <span>Filter</span>
+                    </div>
+                    <div class="menu light-bg">
+                        <i class="fas fa-ellipsis-h"></i>
+                       <span>Show menu</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content"> 
+            <div class="column-1 column">
+                <div class="list-title">
+                    <div>Useful links and resources</div>
+                        <a href="#"><i class="fas fa-ellipsis-h"></i></a>
+                </div>
+                <div class="card">
+                    <div class="card-left-part"> 
+                        <div class="desc-icon"><i class="fas fa-align-left"></i></div>
+                    </div>
+                    <div class="card-right-part">
+                       <a><span><i class="fas fa-pencil-alt"></i></span></a>
+                    </div>
+                </div>
+                
+                <div class="add-card">
+                    <div class="add-button">
+                        <i class="fas fa-plus"></i>
+                        <span>Add a card</span>
+                    </div>
+                    <a href="#"><i class="fas fa-pager"></i></a>
+                </div>
+                <div class="add-card-bottom">
+                    <div class="add-card-button">Add Card</div>
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="column-2 column">
+                <div class="list-title">
+                    <div>In Progress</div>
+                        <a href="#"><i class="fas fa-ellipsis-h"></i></a>
+                </div>
+                <div class="card">
+                    <div class="card-left-part">
+                       
+                        <div><i class="fas fa-align-left"></i></div>
+                    </div>
+                    <div class="card-right-part">
+                        <a><span><i class="fas fa-pencil-alt"></i></span></a>
+                    </div>
+                </div>
+              
+                <div class="add-card">
+                    <div class="add-button">
+                        <i class="fas fa-plus"></i>
+                        <span>Add a card</span>
+                    </div>
+                    <a href="#"><i class="fas fa-pager"></i></a>
+                </div>
+                <div class="add-card-bottom">
+                    <div class="add-card-button">Add Card</div>
+                    <i class="fas fa-times"></i>
+                </div>
+                </div>
+            <div class="column-3 column">
+                <div class="list-title">
+                    <div>Completed</div>
+                    <a href="#"><i class="fas fa-ellipsis-h"></i></a>
+                </div>
+                <div class="card">
+                    <div class="card-left-part">
+                        <div><i class="fas fa-align-left"></i></div>
+                    </div>
+                    <div class="card-right-part">
+                      <a> <span><i class="fas fa-pencil-alt"></i></span></a>
+                    </div>
+                </div>
+              
+                <div class="add-card">
+                    <div class="add-button">
+                        <i class="fas fa-plus"></i>
+                        <span>Add a card</span>
+                    </div>
+                    <a href="#"><i class="fas fa-pager"></i></a>
+                </div>
+                <div class="add-card-bottom">
+                    <div class="add-card-button">Add Card</div>
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="column-4 column">
+                <div class="list-title">
+                    <div>On Hold</div>
+                        <a href="#"><i class="fas fa-ellipsis-h"></i></a>
+                </div>
+                <div class="card">
+                    <div class="card-left-part">
+                       
+                        <div><i class="fas fa-align-left"></i></div>
+                    </div>
+                    <div class="card-right-part">
+                       <a><span><i class="fas fa-pencil-alt"></i></span></a>
+                    </div>
+                </div>
+              
+                <div class="add-card">
+                    <div class="add-button">
+                        <i class="fas fa-plus"></i>
+                        <span>Add a card</span>
+                    </div>
+                    <a href="#"><i class="fas fa-pager"></i></a>
+                </div>
+                <div class="add-card-bottom">
+                    <div class="add-card-button">Add Card</div>
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="./script.js"></script>
+</body>
+</html>
