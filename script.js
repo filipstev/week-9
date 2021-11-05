@@ -264,6 +264,8 @@ const showCard = (e) => {
     columns[parentColumn].outerHTML
   );
 
+  localStorage.setItem('content', columns[parentColumn].parentNode.outerHTML);
+
   getCards();
 };
 
@@ -439,6 +441,8 @@ const showCardNewList = (e, card, columnDiv, addCard, addCardBottom) => {
     localStorage.setItem('column-4', columnDiv.outerHTML);
   }
 
+  localStorage.setItem('content', columnDiv.parentNode.outerHTML);
+
   getCards();
   getDropeZones();
   getDraggingColumns();
@@ -481,6 +485,7 @@ const saveChangesNewList = (parentColumn, path, saveDiv, addCard) => {
   } else if (parentColumn.classList[0] === 'column-4') {
     localStorage.setItem('column-4', parentColumn.outerHTML);
   }
+  localStorage.setItem('content', parentColumn.parentNode.outerHTML);
 };
 
 const closeEditNewList = (path, saveDiv, parentColumn, addCard) => {
@@ -648,9 +653,6 @@ function createAnotherList(title) {
   columnDiv.appendChild(card);
   columnDiv.appendChild(addCard);
   columnDiv.appendChild(addCardBottom);
-  localStorage.setItem('list', JSON.stringify(columnDiv));
-
-  saveItem(columnDiv);
 
   return columnDiv;
 }
@@ -662,31 +664,73 @@ function saveItem(list) {
   localStorage.setItem('lists', lists);
 }
 
-// const makeNewList = (obj) => {
-//   let addCard = obj.firstChild.firstChild.nextSibling.nextSibling;
-//   let addCardBottom =
-//     obj.firstChild.firstChild.nextSibling.nextSibling.nextSibling;
-//   let card = obj.firstChild.firstChild.nextSibling;
-//   let columnDiv = obj.firstChild;
-// };
-
-// localStorage.clear();
-
 window.addEventListener('load', () => {
-  const list = localStorage.getItem('lists');
-  // console.log(lists);
-  // const list = lists.split('*')[0];
-  // localStorage.clear();
-  const list1 = localStorage.getItem('column-1');
-  const list2 = localStorage.getItem('column-2');
-  const list3 = localStorage.getItem('column-3');
-  const list4 = localStorage.getItem('column-4');
-  list1 !== null ? getPredefinedListFromStorage(list1) : null;
-  list2 !== null ? getPredefinedListFromStorage(list2) : null;
-  list3 !== null ? getPredefinedListFromStorage(list3) : null;
-  list4 !== null ? getPredefinedListFromStorage(list4) : null;
-  const newList = localStorage.getItem('lists');
-  newList !== null ? getListFromStorage(newList) : null;
+  const content = localStorage.getItem('content');
+  const htmlObject = document.createElement('div');
+
+  if (content !== null) {
+    htmlObject.innerHTML = content;
+    console.log(htmlObject);
+
+    console.log(htmlObject.firstChild.querySelectorAll('.column'));
+    const columns = htmlObject.firstChild.querySelectorAll('.column');
+
+    columns.forEach((column) => {
+      if (
+        column.classList[0] !== 'column-1' &&
+        column.classList[0] !== 'column-2' &&
+        column.classList[0] !== 'column-3' &&
+        column.classList[0] !== 'column-4'
+      ) {
+        getListFromStorage1(column);
+      } else {
+        column !== null ? getPredefinedListFromStorage1(column) : null;
+      }
+    });
+
+    document.querySelector('.content').replaceWith(htmlObject);
+
+    var makeList = document.querySelector('.make-list');
+    var formDiv = document.querySelector('.form');
+
+    makeList.style.display = 'flex';
+    formDiv.style.display = 'none';
+
+    makeList.addEventListener('click', () => {
+      console.log('???');
+      makeList.style.display = 'none';
+      formDiv.style.display = 'flex';
+    });
+
+    formDiv.lastChild.lastChild.addEventListener('click', () => {
+      closeForm(formDiv, makeList);
+    });
+
+    formDiv.lastChild.firstChild.addEventListener('click', () => {
+      let listInputTitle = document.querySelector('.list-form-input').value;
+      if (listInputTitle != '') {
+        makeList.parentNode.insertBefore(
+          createAnotherList(listInputTitle),
+          makeList
+        );
+        getDropeZones();
+        getCards();
+      }
+      localStorage.setItem('content', formDiv.parentElement.outerHTML);
+    });
+  } else {
+  }
+
+  // const list1 = localStorage.getItem('column-1');
+  // const list2 = localStorage.getItem('column-2');
+  // const list3 = localStorage.getItem('column-3');
+  // const list4 = localStorage.getItem('column-4');
+  // list1 !== null ? getPredefinedListFromStorage(list1) : null;
+  // list2 !== null ? getPredefinedListFromStorage(list2) : null;
+  // list3 !== null ? getPredefinedListFromStorage(list3) : null;
+  // list4 !== null ? getPredefinedListFromStorage(list4) : null;
+  // const newList = localStorage.getItem('lists');
+  // newList !== null ? getListFromStorage(newList) : null;
 
   getCards();
   getDropeZones();
@@ -694,7 +738,28 @@ window.addEventListener('load', () => {
   reorderLists();
 });
 
-localStorage.clear();
+const getListFromStorage1 = (list) => {
+  let addCard = list.lastChild.previousSibling;
+  let addCardBottom = list.lastChild;
+  let card = list.lastChild.previousSibling.previousSibling;
+  let columnDiv = list;
+
+  let cards = columnDiv.querySelectorAll('.card');
+
+  cards.forEach((card) => {
+    card.lastChild.addEventListener('click', (e) =>
+      inputEditedNewList(e, addCard, columnDiv)
+    );
+  });
+
+  addCard.addEventListener('click', (e) =>
+    addCardNewList(e, addCard, addCardBottom, card, columnDiv)
+  );
+
+  addCardBottom.addEventListener('click', (e) => {
+    showCardNewList(e, card, columnDiv, addCard, addCardBottom);
+  });
+};
 
 const getListFromStorage = (list) => {
   const htmlObject = document.createElement('div');
@@ -722,6 +787,31 @@ const getListFromStorage = (list) => {
   });
 
   makeList.parentNode.insertBefore(htmlObject, makeList);
+};
+
+const getPredefinedListFromStorage1 = (list) => {
+  let addCardBottom = list.lastChild.previousSibling;
+  let addCard = list.lastChild.previousSibling.previousSibling.previousSibling;
+  let card = list.firstChild.nextSibling;
+  let columnDiv = list;
+
+  let cards = columnDiv.querySelectorAll('.card');
+
+  cards.forEach((card) => {
+    card.lastChild.addEventListener('click', (e) =>
+      inputEditedNewList(e, addCard, columnDiv)
+    );
+  });
+
+  // getDropeZonesStorage(columns);
+
+  addCard.addEventListener('click', (e) =>
+    addCardNewList(e, addCard, addCardBottom, card, columnDiv)
+  );
+
+  addCardBottom.addEventListener('click', (e) => {
+    showCardNewList(e, card, columnDiv, addCard, addCardBottom);
+  });
 };
 
 const getPredefinedListFromStorage = (list) => {
@@ -760,57 +850,67 @@ const getPredefinedListFromStorage = (list) => {
 
 //--drag and drop------------------------------
 
-function getDraggingColumns(){
+function getDraggingColumns() {
   draggingColumns = document.querySelectorAll('.column');
 
-  draggingColumns.forEach((col)=>{
+  draggingColumns.forEach((col) => {
     col.setAttribute('draggable', 'true');
     col.addEventListener('dragstart', dragColumnStart);
     col.addEventListener('dragend', dragColumnEnd);
   });
 }
 
-
-function reorderLists(){
+function reorderLists() {
   dropContent = document.querySelector('.content');
   dropContent.addEventListener('dragover', dragListOver);
   dropContent.addEventListener('drop', dragListDrop);
 }
 
-function dragColumnStart(){
+function dragColumnStart(e) {
   draggableColumn = this;
   draggableColumn.classList.add('.dragging-column');
+
+  console.log(draggableColumn);
 }
 
-function dragColumnEnd(){
+function dragColumnEnd(e) {
+  console.log(draggableColumn);
+  localStorage.setItem('content', draggableColumn.parentNode.outerHTML);
+
   draggableColumn = null;
 }
 
 let columnAfterDraggingColumn;
 
-function dragListOver(e){
+function dragListOver(e) {
   e.preventDefault();
   columnAfterDraggingColumn = getColumnAfterDraggingColumn(this, e.clientX);
 
- if(columnAfterDraggingColumn){
-    this.insertBefore(draggableColumn, columnAfterDraggingColumn);
-  }
-    else {
+  try {
+    if (columnAfterDraggingColumn) {
+      this.insertBefore(draggableColumn, columnAfterDraggingColumn);
+    } else {
       this.appendChild(draggableColumn);
       this.insertBefore(draggableColumn, this.querySelector('.make-list'));
     }
+  } catch (e) {}
 }
 
-function dragListDrop(){
-  this.insertBefore(draggableColumn, columnAfterDraggingColumn);
+function dragListDrop() {
+  try {
+    this.insertBefore(draggableColumn, columnAfterDraggingColumn);
+  } catch (e) {}
 }
 
 function getColumnAfterDraggingColumn(dropeContent, xDraggingColumn) {
-  let dropeContentColumns = [...dropeContent.querySelectorAll('.column:not(.dragging-column)')];
+  let dropeContentColumns = [
+    ...dropeContent.querySelectorAll('.column:not(.dragging-column)'),
+  ];
   return dropeContentColumns.reduce(
     (closestColumn, nextColumn) => {
       let nextColumnRect = nextColumn.getBoundingClientRect();
-      let offset = xDraggingColumn - nextColumnRect.left- nextColumnRect.width/3;
+      let offset =
+        xDraggingColumn - nextColumnRect.left - nextColumnRect.width / 3;
       if (offset < 0 && offset > closestColumn.offset) {
         return { offset, element: nextColumn };
       } else {
@@ -821,6 +921,7 @@ function getColumnAfterDraggingColumn(dropeContent, xDraggingColumn) {
   ).element;
 }
 
+/************************************************************************** */
 
 function getCards() {
   madeCards = document.querySelectorAll('.card');
@@ -845,71 +946,31 @@ function getDropeZones() {
 function dragStart(e) {
   draggableItem = this;
   draggableItem.classList.add('.dragging');
-
-  console.log(draggableItem.parentNode);
-
-  draggableItem.parentNode.addEventListener('mouseleave', () => {
-    console.log('HEJ');
-    if (
-      e.path[1].classList[0] !== 'column-1' &&
-      e.path[1].classList[0] !== 'column-2' &&
-      e.path[1].classList[0] !== 'column-3' &&
-      e.path[1].classList[0] !== 'column-4'
-    ) {
-      saveItem(e.path[1]);
-    }
-
-    if (e.path[1].classList[0] === 'column-1') {
-      localStorage.setItem('column-1', e.path[1].outerHTML);
-    } else if (e.path[1].classList[0] === 'column-2') {
-      localStorage.setItem('column-2', e.path[1].outerHTML);
-    } else if (e.path[1].classList[0] === 'column-3') {
-      localStorage.setItem('column-3', e.path[1].outerHTML);
-    } else if (e.path[1].classList[0] === 'column-4') {
-      localStorage.setItem('column-4', e.path[1].outerHTML);
-    }
-  });
 }
 
 function dragEnd(e) {
-  if (
-    e.path[1].classList[0] !== 'column-1' &&
-    e.path[1].classList[0] !== 'column-2' &&
-    e.path[1].classList[0] !== 'column-3' &&
-    e.path[1].classList[0] !== 'column-4'
-  ) {
-    saveItem(e.path[1]);
-  }
-
-  if (e.path[1].classList[0] === 'column-1') {
-    localStorage.setItem('column-1', e.path[1].outerHTML);
-  } else if (e.path[1].classList[0] === 'column-2') {
-    localStorage.setItem('column-2', e.path[1].outerHTML);
-  } else if (e.path[1].classList[0] === 'column-3') {
-    localStorage.setItem('column-3', e.path[1].outerHTML);
-  } else if (e.path[1].classList[0] === 'column-4') {
-    localStorage.setItem('column-4', e.path[1].outerHTML);
-  }
-
   draggableItem = null;
 }
-
-// localStorage.clear();
 
 let cardAfterDragingCard;
 function dragOver(e) {
   e.preventDefault();
   cardAfterDragingCard = getCardAfterDragingCard(this, e.clientY);
-  if (cardAfterDragingCard) {
-    this.insertBefore(draggableItem, cardAfterDragingCard);
-  } else {
-    this.appendChild(draggableItem);
-  }
-  this.insertBefore(draggableItem, this.querySelector('.add-card'));
+
+  try {
+    if (cardAfterDragingCard) {
+      this.insertBefore(draggableItem, cardAfterDragingCard);
+    } else {
+      this.appendChild(draggableItem);
+    }
+    this.insertBefore(draggableItem, this.querySelector('.add-card'));
+  } catch (e) {}
 }
 
 function dragDrop() {
-  this.insertBefore(draggableItem, cardAfterDragingCard);
+  try {
+    this.insertBefore(draggableItem, cardAfterDragingCard);
+  } catch (e) {}
 }
 
 function getCardAfterDragingCard(dropeZone, yDraggingCard) {
