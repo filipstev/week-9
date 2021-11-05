@@ -9,12 +9,18 @@ const column = document.querySelectorAll('.column');
 const closeItem = document.querySelectorAll('.fa-times');
 const divone = document.querySelector('.cao-one');
 const divtwo = document.querySelector('.cao-two');
+const resetStorage = document.querySelector('.automation');
 var madeCards;
 var dropeZones;
 var draggableItem = null;
 var draggingColumns;
 var dropContent;
 var draggableColumn = null;
+
+resetStorage.addEventListener('click', () => {
+  localStorage.clear();
+  window.location.reload();
+});
 
 const closeButtons = [];
 const columns = [];
@@ -192,7 +198,6 @@ const addingCard = (e) => {
   addCard[parentColumn].style.display = 'none';
   addCardBottoms[parentColumn].style.display = 'flex';
 
-  //   cards[parentColumn].style.display = 'block';
   cards[parentColumn].classList.toggle('card-add');
   columns[parentColumn].insertBefore(noviDiv, addCards[parentColumn]);
 };
@@ -257,12 +262,6 @@ const showCard = (e) => {
   cardDiv.style.display = 'flex';
 
   columns[parentColumn].insertBefore(cardDiv, addCards[parentColumn]);
-  // console.log(columns[parentColumn].outerHTML);
-  // console.log(columns[parentColumn]);
-  localStorage.setItem(
-    'column-' + (parentColumn + 1),
-    columns[parentColumn].outerHTML
-  );
 
   localStorage.setItem('content', columns[parentColumn].parentNode.outerHTML);
 
@@ -422,25 +421,6 @@ const showCardNewList = (e, card, columnDiv, addCard, addCardBottom) => {
 
   columnDiv.insertBefore(cardDiv, addCard);
 
-  if (
-    columnDiv.classList[0] !== 'column-1' &&
-    columnDiv.classList[0] !== 'column-2' &&
-    columnDiv.classList[0] !== 'column-3' &&
-    columnDiv.classList[0] !== 'column-4'
-  ) {
-    saveItem(columnDiv);
-  }
-
-  if (columnDiv.classList[0] === 'column-1') {
-    localStorage.setItem('column-1', columnDiv.outerHTML);
-  } else if (columnDiv.classList[0] === 'column-2') {
-    localStorage.setItem('column-2', columnDiv.outerHTML);
-  } else if (columnDiv.classList[0] === 'column-3') {
-    localStorage.setItem('column-3', columnDiv.outerHTML);
-  } else if (columnDiv.classList[0] === 'column-4') {
-    localStorage.setItem('column-4', columnDiv.outerHTML);
-  }
-
   localStorage.setItem('content', columnDiv.parentNode.outerHTML);
 
   getCards();
@@ -467,24 +447,7 @@ const saveChangesNewList = (parentColumn, path, saveDiv, addCard) => {
     path[3].style.display = 'flex';
   }
   saveDiv.style.display = 'none';
-  if (
-    parentColumn.classList[0] !== 'column-1' &&
-    parentColumn.classList[0] !== 'column-2' &&
-    parentColumn.classList[0] !== 'column-3' &&
-    parentColumn.classList[0] !== 'column-4'
-  ) {
-    saveItem(parentColumn);
-  }
 
-  if (parentColumn.classList[0] === 'column-1') {
-    localStorage.setItem('column-1', parentColumn.outerHTML);
-  } else if (parentColumn.classList[0] === 'column-2') {
-    localStorage.setItem('column-2', parentColumn.outerHTML);
-  } else if (parentColumn.classList[0] === 'column-3') {
-    localStorage.setItem('column-3', parentColumn.outerHTML);
-  } else if (parentColumn.classList[0] === 'column-4') {
-    localStorage.setItem('column-4', parentColumn.outerHTML);
-  }
   localStorage.setItem('content', parentColumn.parentNode.outerHTML);
 };
 
@@ -508,7 +471,6 @@ const closeEditNewList = (path, saveDiv, parentColumn, addCard) => {
 const inputEditedNewList = (e, addCard, columnDiv) => {
   const saveDiv = document.createElement('div');
   saveDiv.classList.add('add-card-bottom');
-  console.log(addCard);
 
   const saveButton = document.createElement('div');
   saveButton.classList.add('add-card-button');
@@ -657,22 +619,13 @@ function createAnotherList(title) {
   return columnDiv;
 }
 
-function saveItem(list) {
-  let lists = '';
-
-  lists += list.outerHTML;
-  localStorage.setItem('lists', lists);
-}
-
 window.addEventListener('load', () => {
   const content = localStorage.getItem('content');
   const htmlObject = document.createElement('div');
 
   if (content !== null) {
     htmlObject.innerHTML = content;
-    console.log(htmlObject);
 
-    console.log(htmlObject.firstChild.querySelectorAll('.column'));
     const columns = htmlObject.firstChild.querySelectorAll('.column');
 
     columns.forEach((column) => {
@@ -682,9 +635,9 @@ window.addEventListener('load', () => {
         column.classList[0] !== 'column-3' &&
         column.classList[0] !== 'column-4'
       ) {
-        getListFromStorage1(column);
+        getListFromStorage(column);
       } else {
-        column !== null ? getPredefinedListFromStorage1(column) : null;
+        column !== null ? getPredefinedListFromStorage(column) : null;
       }
     });
 
@@ -697,7 +650,6 @@ window.addEventListener('load', () => {
     formDiv.style.display = 'none';
 
     makeList.addEventListener('click', () => {
-      console.log('???');
       makeList.style.display = 'none';
       formDiv.style.display = 'flex';
     });
@@ -721,24 +673,13 @@ window.addEventListener('load', () => {
   } else {
   }
 
-  // const list1 = localStorage.getItem('column-1');
-  // const list2 = localStorage.getItem('column-2');
-  // const list3 = localStorage.getItem('column-3');
-  // const list4 = localStorage.getItem('column-4');
-  // list1 !== null ? getPredefinedListFromStorage(list1) : null;
-  // list2 !== null ? getPredefinedListFromStorage(list2) : null;
-  // list3 !== null ? getPredefinedListFromStorage(list3) : null;
-  // list4 !== null ? getPredefinedListFromStorage(list4) : null;
-  // const newList = localStorage.getItem('lists');
-  // newList !== null ? getListFromStorage(newList) : null;
-
   getCards();
   getDropeZones();
   getDraggingColumns();
   reorderLists();
 });
 
-const getListFromStorage1 = (list) => {
+const getListFromStorage = (list) => {
   let addCard = list.lastChild.previousSibling;
   let addCardBottom = list.lastChild;
   let card = list.lastChild.previousSibling.previousSibling;
@@ -761,35 +702,7 @@ const getListFromStorage1 = (list) => {
   });
 };
 
-const getListFromStorage = (list) => {
-  const htmlObject = document.createElement('div');
-  htmlObject.innerHTML = list;
-
-  let addCard = htmlObject.firstChild.lastChild.previousSibling;
-  let addCardBottom = htmlObject.firstChild.lastChild;
-  let card = htmlObject.firstChild.firstChild.nextSibling;
-  let columnDiv = htmlObject.firstChild;
-
-  let cards = columnDiv.querySelectorAll('.card');
-
-  cards.forEach((card) => {
-    card.lastChild.addEventListener('click', (e) =>
-      inputEditedNewList(e, addCard, columnDiv)
-    );
-  });
-
-  addCard.addEventListener('click', (e) =>
-    addCardNewList(e, addCard, addCardBottom, card, columnDiv)
-  );
-
-  addCardBottom.addEventListener('click', (e) => {
-    showCardNewList(e, card, columnDiv, addCard, addCardBottom);
-  });
-
-  makeList.parentNode.insertBefore(htmlObject, makeList);
-};
-
-const getPredefinedListFromStorage1 = (list) => {
+const getPredefinedListFromStorage = (list) => {
   let addCardBottom = list.lastChild.previousSibling;
   let addCard = list.lastChild.previousSibling.previousSibling.previousSibling;
   let card = list.firstChild.nextSibling;
@@ -803,8 +716,6 @@ const getPredefinedListFromStorage1 = (list) => {
     );
   });
 
-  // getDropeZonesStorage(columns);
-
   addCard.addEventListener('click', (e) =>
     addCardNewList(e, addCard, addCardBottom, card, columnDiv)
   );
@@ -813,41 +724,6 @@ const getPredefinedListFromStorage1 = (list) => {
     showCardNewList(e, card, columnDiv, addCard, addCardBottom);
   });
 };
-
-const getPredefinedListFromStorage = (list) => {
-  const htmlObject = document.createElement('div');
-  htmlObject.innerHTML = list;
-
-  let addCard =
-    htmlObject.firstChild.lastChild.previousSibling.previousSibling
-      .previousSibling;
-  let addCardBottom = htmlObject.firstChild.lastChild.previousSibling;
-  let card = htmlObject.firstChild.firstChild.nextSibling;
-  let columnDiv = htmlObject.firstChild;
-
-  let cards = columnDiv.querySelectorAll('.card');
-
-  cards.forEach((card) => {
-    card.lastChild.addEventListener('click', (e) =>
-      inputEditedNewList(e, addCard, columnDiv)
-    );
-  });
-
-  // getDropeZonesStorage(columns);
-
-  addCard.addEventListener('click', (e) =>
-    addCardNewList(e, addCard, addCardBottom, card, columnDiv)
-  );
-
-  addCardBottom.addEventListener('click', (e) => {
-    showCardNewList(e, card, columnDiv, addCard, addCardBottom);
-  });
-
-  document
-    .querySelector('.column-' + htmlObject.firstChild.classList[0].slice(-1))
-    .replaceWith(htmlObject);
-};
-
 //--drag and drop------------------------------
 
 function getDraggingColumns() {
@@ -869,12 +745,9 @@ function reorderLists() {
 function dragColumnStart(e) {
   draggableColumn = this;
   draggableColumn.classList.add('.dragging-column');
-
-  console.log(draggableColumn);
 }
 
 function dragColumnEnd(e) {
-  console.log(draggableColumn);
   localStorage.setItem('content', draggableColumn.parentNode.outerHTML);
 
   draggableColumn = null;
